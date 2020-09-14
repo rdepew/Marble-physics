@@ -10,12 +10,20 @@ function final(self)
 	-- Remove this function if not needed
 end
 
+v0 = vmath.vector3(0.0, 200.0, 0.0)
+
 function update(self, dt)
 	-- Determine the current box Game Object location and generate a message on top 
 	-- of the box sprite displaying the x/y position
-	local xPos = math.floor(go.get_position().x)
-	local yPos = math.floor(go.get_position().y)
-	msg.post("@render:", "draw_text", { text = "x: " .. xPos .. "  y: " .. yPos, position = vmath.vector3(xPos-55, yPos + 75, 0) } )
+	local a = vmath.vector3(100.0, 0.0, 0.0)
+	local p = go.get_position()
+	local v = v0 + dt * a
+	v0 = v
+	p = p + v * dt
+	go.set_position(p)
+	msg.post("@render:", "draw_text", { text = "a: (" .. a.x .. ", " .. a.y .. ", " .. a.z .. ")", position = vmath.vector3(100, 175, 0) } )
+	msg.post("@render:", "draw_text", { text = "v: (" .. v.x .. ", " .. v.y .. ", " .. v.z .. ")", position = vmath.vector3(100, 150, 0) } )
+	msg.post("@render:", "draw_text", { text = "x: " .. p.x .. "  y: " .. p.y, position = vmath.vector3(100, 200, 0) } )
 end
 
 function on_message(self, message_id, message, sender)
